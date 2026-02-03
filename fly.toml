@@ -1,45 +1,54 @@
-app = "bymanage"
-primary_region = "sin"
+# fly.toml app configuration file generated for bymanage on 2026-02-03T10:19:59+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'bymanage'
+primary_region = 'sin'
+
+[processes]
+  app = "odoo --config=/etc/odoo/odoo.conf --db_host=$DB_HOST --db_port=$DB_PORT --db_user=$DB_USER --db_password=$DB_PASSWORD"
 
 [build]
 
 [env]
-  PORT = "8069"
-  LONGPOLLING_PORT = "8072"
+  LONGPOLLING_PORT = '8072'
+  PORT = '8069'
+
+[[mounts]]
+  source = 'odoo_data'
+  destination = '/var/lib/odoo'
 
 [http_service]
   internal_port = 8069
   force_https = true
-  auto_stop_machines = false
+  auto_stop_machines = 'off'
   auto_start_machines = true
   min_machines_running = 1
-  processes = ["app"]
+  processes = ['app']
 
   [[http_service.checks]]
-    interval = "15s"
-    timeout = "10s"
-    grace_period = "30s"
-    method = "GET"
-    path = "/web/health"
+    interval = '15s'
+    timeout = '10s'
+    grace_period = '30s'
+    method = 'GET'
+    path = '/web/health'
 
 [[services]]
+  protocol = 'tcp'
   internal_port = 8072
-  protocol = "tcp"
 
   [[services.ports]]
-    handlers = ["tls", "http"]
     port = 443
+    handlers = ['tls', 'http']
 
   [[services.tcp_checks]]
-    interval = "15s"
-    timeout = "10s"
-    grace_period = "30s"
-
-[mounts]
-  source = "odoo_data"
-  destination = "/var/lib/odoo"
+    interval = '15s'
+    timeout = '10s'
+    grace_period = '30s'
 
 [[vm]]
   memory = '2gb'
   cpu_kind = 'shared'
   cpus = 2
+  memory_mb = 2048
