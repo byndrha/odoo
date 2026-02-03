@@ -7,7 +7,7 @@ app = 'bymanage'
 primary_region = 'sin'
 
 [processes]
-  app = "odoo --config=/etc/odoo/odoo.conf --db_host=db.udtczjpwgluzlztzcpkh.supabase.co --db_port=5432 --db_user=postgres --db_password=byManage889900 --db_sslmode=require"
+  app = "odoo --config=/etc/odoo/odoo.conf --db_host=db.udtczjpwgluzlztzcpkh.supabase.co --db_port=5432 --db_user=bymanage --db_password=byManage889900 --db_sslmode=require"
 
 [build]
 
