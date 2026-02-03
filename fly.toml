@@ -1,0 +1,45 @@
+app = "bymanage"
+primary_region = "sin"
+
+[build]
+
+[env]
+  PORT = "8069"
+  LONGPOLLING_PORT = "8072"
+
+[http_service]
+  internal_port = 8069
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+  [[http_service.checks]]
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "GET"
+    path = "/web/health"
+
+[[services]]
+  internal_port = 8072
+  protocol = "tcp"
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+
+[mounts]
+  source = "odoo_data"
+  destination = "/var/lib/odoo"
+
+[[vm]]
+  memory = '2gb'
+  cpu_kind = 'shared'
+  cpus = 2
